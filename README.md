@@ -1,6 +1,12 @@
-ness Requirements Document for the FXExchange project.
+Business Requirements Document for the FXExchange project.
 
-Developers: 0 Recruitment Consultants: 0 Men who love women easily and passionately: 2
+###############################################################
+
+Developers: 0
+Recruitment Consultants: 0 
+Men who love women easily and passionately: 2
+
+###############################################################
 
 Overview: The purpose of the project is to build a low-latency exchange for FX. Ideally, the project will employ the LMAX Disrutor pattern to achieve high performance and will be able to scale both vertically and horizontally - with several processes capable of being run, potentially to provide resilliency or an increase in performance. If the project is successful then the framework will be applied to other securities - so some element of generality will be appreciated.
 

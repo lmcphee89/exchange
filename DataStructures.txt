@@ -1,0 +1,66 @@
+So I've been trying to figure out what the data structures will be for the order books themselves... and I'm havign no small amount of difficulty...
+
+What I'd originally thought was that the process would go something like this:
+
+1) Trader submits order
+2) If order is filled immediately then send trader a message stating as such
+3) If not, then add the order to the order book and send the trader a reference number for that trade
+4) If the trader wants to amend a standing order then they can submit the message with the required code.
+
+Now, here's what I was thinking about data structures:
+
+Array:
+        Pro's:
+                Simple
+                Fast
+                Low Memory Usage
+                Easy to implement to avoid garbage collection
+        Con's:
+                Insertion is very slow
+                Deletion is also slow
+                Doesn't scale particularly well with linear searches on big bumbers
+
+List:
+        Pro's:
+                Also simple
+                Fast at insertion (in the cases we're considering, but some edge cases will be very slow indeed)
+                Easy to fill immediate orders
+        Con's:
+                Slow at deletion
+                Slow at dealing with orders wildly different from the best bid/offer prices
+                Memory fragmentation results in big performance hit
+
+Tree:
+        Pro's:
+                Good at insertion, deletion and amending orders.
+        Con's:
+                How to implement reference numbers for trades?
+                
+Map:
+        Pro's:
+                Fastest lookup: insertion, deletion and amending orders are all v fast
+                Simple to understand
+        Con's:
+                No sense of order
+                Doesn't mesh well with domain problem
+
+
+Potential compromise:
+          Don't have reference numbers - messy.
+          Optimise around presumption of trades being added around bid/offer/ spread - exposed to DDoS attacks.
+          Have a combination of the above - e.g. a tree of linked lists, based off of small segments of price
+          
+
+Personally, I'm all for the implementation where we have a RB-Tree with each node on the tree as a linked list. That way we get to divide the lists up so that we can have better performance when the numbers get higher. 
+
+For example,
+
+                (98 - 102)
+               /         \
+              /           \
+          (90 - 93)        (107 - 110)
+          /        \      /           \
+         /          \    (103- 106)    \ 
+        /            \                 (110-113)
+     (86 - 89)   (94 - 97)
+          
